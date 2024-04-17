@@ -8,6 +8,7 @@ const SecondComponent = () => {
     const [imagenUrl, setImagenUrl] = useState('');
     const [tree,setTree]=useState('')
     const [flag,setFlag]=useState(false)
+    const [accuracy,setAccuracy]=useState({})
     useEffect(() => {
         const fetchImage = async () => {
             try {
@@ -25,6 +26,14 @@ const SecondComponent = () => {
     useEffect(()=>{
         axios.get(`${baseUrl}/ntree`).then((response)=>{
             setNTree(response.data)
+        }).catch((error)=>{
+            console.log(error)
+        })
+    },[])
+    useEffect(()=>{
+        axios.get(`${baseUrl}/accuracy`).then((response)=>{
+            console.log(response.data)
+            setAccuracy(response.data)
         }).catch((error)=>{
             console.log(error)
         })
@@ -72,6 +81,11 @@ const SecondComponent = () => {
                         <img src={tree} alt="Imagen cargada desde el servidor"/>
                     </div>
                 }
+            </div>
+            <div className={'text-center mt-4'}>
+                <h1>Resultado</h1>
+                <h5>With Preparation: {accuracy['WITH_preparation']}</h5>
+                <h5>Without Preparation: {accuracy['WITHOUT_preparation']}</h5>
             </div>
         </>
     )
