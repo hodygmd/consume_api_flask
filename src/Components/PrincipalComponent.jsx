@@ -1,16 +1,19 @@
 import {React, useEffect, useState} from "react";
 import axios from "axios";
+const baseUrl='http://localhost:5000'
+
+
 const PrincipalComponent=()=>{
-    /*const abaseUrl='https://3vhbztgd-5000.usw3.devtunnels.ms'*/
-    const abaseUrl='http://localhost:5000'
+    const url='https://3vhbztgd.usw3.devtunnels.ms'
     const [dataset,setDataset]=useState([])
     const [datasetKeys,setDatasetKeys]=useState([])
     const [trainScaled,setTrainScaled]=useState([])
     const [trainScaledKeys,setTrainScaledKeys]=useState([])
     const [decisionBoundary,setDecisionBoundary]=useState('')
     const [archivo, setArchivo] = useState(null);
+
     useEffect(() => {
-        axios.get(`${abaseUrl}/dataset`).then((response)=>{
+        axios.get(`${baseUrl}/dataset`).then((response)=>{
             setDataset(response.data)
             setDatasetKeys(Object.keys(response.data[0]))
         }).catch((error)=>{
@@ -18,7 +21,7 @@ const PrincipalComponent=()=>{
         })
     }, []);
     useEffect(() => {
-        axios.get(`${abaseUrl}/train_scaled`).then((response)=>{
+        axios.get(`${baseUrl}/train_scaled`).then((response)=>{
             setTrainScaled(response.data)
             setTrainScaledKeys(Object.keys(response.data[0]))
         }).catch((error)=>{
@@ -29,7 +32,7 @@ const PrincipalComponent=()=>{
 
         const fetchImage = async () => {
             try {
-                const response = await axios.get(`${abaseUrl}/decision_boundary`, { responseType: 'blob' });
+                const response = await axios.get(`${baseUrl}/decision_boundary`, { responseType: 'blob' });
                 const imageBlob = response.data;
                 const imageObjectURL = URL.createObjectURL(imageBlob);
                 setDecisionBoundary(imageObjectURL);
@@ -41,7 +44,7 @@ const PrincipalComponent=()=>{
         fetchImage();
     }, []);
     const Download=()=>{
-        axios.get(`${abaseUrl}/tree`).then((response)=>{
+        axios.get(`${baseUrl}/tree`).then((response)=>{
             console.log(response.data)
         }).catch((error)=>{
             console.log(error)
@@ -59,6 +62,7 @@ const PrincipalComponent=()=>{
     return (
         <>
             <div className={'p-3'}>
+                <h1>Dataset</h1>
                 <table className='table table-info'>
                     <thead>
                     <tr>
@@ -82,6 +86,7 @@ const PrincipalComponent=()=>{
                     </tbody>
                 </table>
             </div>
+            <h1>Cojunto Escalado</h1>
             <div className={'p-3'}>
                 <table className='table table-info'>
                     <thead>
@@ -106,12 +111,13 @@ const PrincipalComponent=()=>{
                     </tbody>
                 </table>
             </div>
+            <h1>Limite de decision</h1>
             <div className={'text-center'}>
                 <img src={decisionBoundary} alt="Imagen cargada desde el servidor"/>
             </div>
             <div className={'text-center mt-4'}>
                 <button className={'btn btn-info'} onClick={obtenerArchivo}>
-                    Creste Tree
+                    Create Tree
                 </button>
                 {archivo && (
                     <a href={URL.createObjectURL(archivo)} download="android_malware.dot">
