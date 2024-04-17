@@ -9,6 +9,7 @@ const SecondComponent = () => {
     const [tree,setTree]=useState('')
     const [flag,setFlag]=useState(false)
     const [accuracy,setAccuracy]=useState({})
+    const [accuracy1,setAccuracy1]=useState({})
     useEffect(() => {
         const fetchImage = async () => {
             try {
@@ -34,6 +35,14 @@ const SecondComponent = () => {
         axios.get(`${baseUrl}/accuracy`).then((response)=>{
             console.log(response.data)
             setAccuracy(response.data)
+        }).catch((error)=>{
+            console.log(error)
+        })
+    },[])
+    useEffect(()=>{
+        axios.get(`${baseUrl}/accuracy1`).then((response)=>{
+            console.log(response.data)
+            setAccuracy1(response.data)
         }).catch((error)=>{
             console.log(error)
         })
@@ -84,8 +93,11 @@ const SecondComponent = () => {
             </div>
             <div className={'text-center mt-4'}>
                 <h1>Resultado</h1>
-                <h5>With Preparation: {accuracy['WITH_preparation']}</h5>
-                <h5>Without Preparation: {accuracy['WITHOUT_preparation']}</h5>
+                <h5>Escalado: {accuracy['WITH_preparation']}</h5>
+                <h5>Sin Escalar: {accuracy['WITHOUT_preparation']}</h5>
+                <hr/>
+                <h5>Escalado: {accuracy1['WITH_preparation']}</h5>
+                <h5>Sin Escalar: {accuracy1['WITHOUT_preparation']}</h5>
             </div>
         </>
     )
