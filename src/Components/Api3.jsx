@@ -172,7 +172,7 @@ const Api3 = () => {
                 <div className={'bg-primary p-2'}>
                     {Object.entries(bestEstimator).map(([key, value]) => (
                         <li key={key}>
-                            <strong>{key}:</strong> {value}
+                            <strong>{key}:</strong> {value===false ? 'false' : value===true ? 'true' : value===null ? 'null' : value}
                         </li>
                     ))}
                 </div>
